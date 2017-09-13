@@ -6,25 +6,31 @@ console.log(awesomeThoughts);
 console.log(funThoughts);
 $("#main").append(funThoughts);
 */
+function displayHeader(){
+	var name = "Toan Truong";
+	var role = "Computer Engineering Student";
+	var formattedName = HTMLheaderName.replace( "%data%", name);
+	var formattedRole = HTMLheaderRole.replace("%data%", role);
+	$("#header").append(formattedName);
+	$("#header").append(formattedRole);
+};
 
 
-var name = "Toan Truong";
-var role = "Computer Engineering Student";
-var formattedName = HTMLheaderName.replace( "%data%", name);
-var formattedRole = HTMLheaderRole.replace("%data%", role);
-$("#header").append(formattedName);
-$("#header").append(formattedRole);
-
-
+displayHeader();
 var bio = {
 	"name" : "Toan Truong",
 	"role" : "Computer Engineering Student",
-	"contact" : ["(647)-987-8184", "toan.truong25@gmail.com"],
+	"contacts" : {
+		"mobile" : "(647)-987-8184", 
+		"email" : "toan.truong25@gmail.com",
+		"location" : "Mississauga",
+		"github" : "https://github.com/truong25/",
+	},
+	"welcomeMessage" : "Welcome to my profile!",
 	//include image -- "image" : "",
-	"location" : "Mississauga, ON",
-	"github" : "https://github.com/truong25/",
-	"skills" : ["JavaScript", "HTML & CSS", "Java", "C"]
 	
+	"skills" : ["JavaScript", "HTML & CSS", "Java", "C"],
+	"bioPic" : "https://scontent.fyqm1-1.fna.fbcdn.net/v/t1.0-9/12805980_10154832710993018_1387936092652587143_n.jpg?oh=8b690834a056978779ca0bd23c7396f7&oe=5A52899A"
 };
 
 
@@ -85,19 +91,47 @@ var projects = {
 	{
 		"title" : "Crash Fever",
 		"dates" : "July 2017",
-		"images" : ["https://truong25.github.io/"],
-		"description": "A website that I created to utilize my knowledge gained from learning HTML & CSS."
+		"description": "A website that I created to utilize my knowledge gained from learning HTML & CSS.",
+		"images" : ["https://i.imgur.com/gMdDxgL.png"]
+	},
+	{
+		"title" : "Udacity Online Resume",
+		"dates" : "July 2017",
+		   //, "https://truong25.github.io/"
+		"description": "Creating a Resume through the use of JavaScript!",
+		//"images" : ["https://i.imgur.com/zipdoRn.png"]
 	}]	
 };
 
-if (bio.skills.length > 0) {
-	$("#header").append(HTMLskillsStart);
 	
-	var formattedSkill = HTMLskills.replace("%data%", bio.skills[0]);
-	$("#skills").append(formattedSkill);
-	formattedSkill = HTMLskills.replace("%data%", bio.skills[1]);
-	$("#skills").append(formattedSkill);
-};
+
+
+
+
+function displayBio() {
+	var formattedMobile = HTMLmobile.replace("%data%", bio.contacts["mobile"]);
+	 $("#header").append(formattedMobile);
+	 var formattedEmail = HTMLemail.replace("%data%", bio.contacts.email);
+	 $("#header").append(formattedEmail);
+	 var formattedGithub = HTMLgithub.replace("%data%", bio.contacts.github);
+	 $("#header").append(formattedGithub);
+	 var formattedLocation = HTMLlocation.replace("%data%", bio.contacts.location);
+	 $("#header").append(formattedLocation);
+	 var formattedWelcomeMessage = HTMLwelcomeMsg.replace("%data%", bio.welcomeMessage);
+	 $("#header").append(formattedWelcomeMessage);
+	 var formattedBioPic = HTMLbioPic.replace("%data%", bio.bioPic);
+	$("#header").append(formattedBioPic);
+	 
+	if (bio.skills.length > 0) {
+	$("#header").append(HTMLskillsStart);
+		for ( skill in bio.skills)
+		{	
+			var formattedSkill = HTMLskills.replace("%data%", bio.skills[skill]);
+			$("#skills").append(formattedSkill);
+		}
+	
+	};
+}
 
 function displayWork() {
 	
@@ -118,7 +152,7 @@ function displayWork() {
 }
 
 };
-displayWork();
+
 
 
 $("#main").append(internationalizeButton);
@@ -132,6 +166,37 @@ function inName(string){
 	var finalString = newString[0] + " " + newString[1];
 	console.log(newString);
 };
+
+projects.display = function() {
+	for (project in projects.projects) {
+		$("#projects").append(HTMLprojectStart);
+		
+		var formattedTitle = HTMLprojectTitle.replace("%data%", projects.projects[project].title);
+		$(".project-entry:last").append(formattedTitle);
+		
+		var formattedDates = HTMLprojectDates.replace("%data%", projects.projects[project].dates);
+		$(".project-entry:last").append(formattedDates);
+		
+		var formattedDescription = HTMLprojectDescription.replace("%data%", projects.projects[project].description);
+		$(".project-entry:last").append(formattedDescription);
+		
+		if (projects.projects[project].images.length >0) {
+			for (image in projects.projects[project].images) {
+				var formattedImage = HTMLprojectImage.replace("%data%", projects.projects[project].images[image]);
+				$(".project-entry:last").append(formattedImage);
+			}
+		}
+		
+	}
+}
+
+displayBio();
+
+displayWork();
+$("#mapDiv").append(googleMap);
+projects.display();
+
+
 
 //$("#main").append(bio.name);
 //$("#main").append(education.name);
